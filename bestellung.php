@@ -40,7 +40,7 @@ EOT;
     <!--Dynamischer Teil -->
     <form>
       <!--Dropdownmenu -->
-      <select name="Warenkorb" id="myList" size="5">
+      <select multiple name="Warenkorb" id="myList" size="5">
         <option value="1">Pizza Margherita</option>
         <option value="2">Pizza Salami</option>
         <option value="3">Pizza Hawaii</option>
