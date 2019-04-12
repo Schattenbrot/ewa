@@ -12,7 +12,9 @@
   <meta charset="utf-8" />
     <title>$title</title>
 </head>
-	
+EOT;
+?>
+
 <body>
   <section>
     <h1>Bestellung</h1>
@@ -54,6 +56,4 @@
     </form>
   </section>
 </body>
-EOT;
-?>
 </html>
