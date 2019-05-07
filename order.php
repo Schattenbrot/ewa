@@ -4,7 +4,7 @@ class Order {
 	private $orderID;
 	private $adresse;
 	private $ordertime;
-	//private $pizza_list[] = array;
+	//private $pizza_list[] = array();
 
 	//function __construct($adresse) {
 		//$this->adresse = $adresse;
@@ -25,6 +25,14 @@ class Order {
 	function getAdresse() {
 		return $this->adresse;
 	}
+/*
+	funciton getPizzaList() {
+    return $this->pizza_list[];
+  }
+
+  function addPizza($pizza) {
+    $this->pizza_list[] = $pizza;
+  }*/
 }
 
 ?>

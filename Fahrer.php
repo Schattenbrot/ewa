@@ -15,7 +15,7 @@ class Driver extends Page {
 	
 	protected function __construct() {
 		parent::__construct();
-		if (!isset($_SESSION[sessionId])) {
+		if (!isset($_SESSION['sessionId'])) {
 			$_SESSION['sessionId'] = md5(uniqid(mt_rand()));
 		}
 		$this->sessionId = $_SESSION['sessionId'];
@@ -27,12 +27,12 @@ class Driver extends Page {
 
 	protected function getViewData() {
 		$order_list[] = array();
-
+		
 		$sql = "SELECT BestellungID, Adresse, Bestellzeitpunkt FROM bestellung";
 
 		$recordset = $this->_database->query($sql);
-		if(!recordset) {
-			throw new Exception("Abfrage fehlgeschlagen: " . $this->_database->error);
+		if(!$recordset) {
+			throw new Exception("Abfrage fehlgeschlagen: " . $this->_database->error;
 		}
 
 		while ($record = $recordset->fetch_assoc()) {
