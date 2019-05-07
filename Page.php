@@ -31,9 +31,10 @@
 abstract class Page
 {
     // --- ATTRIBUTES ---
-    //private $servername = "localhost";
-    //private $username = "root";
-    //private $password = "";
+    private $servername = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $DB_name = "ewa";
 
     /**
      * Reference to the MySQLi-Database that is
@@ -52,10 +53,7 @@ abstract class Page
      */
     protected function __construct() 
     {
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $this->_database = new MySQLi($servername, $username, $password);
+        $this->_database = new MySQLi($this->servername, $this->username, $this->password, $this->DB_name);
         if (mysqli_connect_errno()) {
             throw new Exception("Keine Verbindung zur Datenbank: " . mysqli_connect_errno());
         }
