@@ -97,7 +97,7 @@ abstract class Page
                 <meta charset="UTF-8">
                 <title><?php echo "{$headline}" ?></title>
             <?php
-            echo ( $headline == 'Baecker' || $headline == 'Fahrer') ?
+            echo ( $headline == 'Bäcker' || $headline == 'Fahrer') ?
                 '<meta http-equiv="refresh" content="5">' : ''
                 ?>
         </head>
