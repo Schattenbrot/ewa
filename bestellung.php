@@ -31,7 +31,7 @@ class Orderpage extends Page
 
   protected function getViewData()
   {
-    $pizza_list[] = array();
+    $pizza_list = array();
     
     $sql = "SELECT PizzaName, Bilddatei, Preis FROM angebot";
 
@@ -77,12 +77,14 @@ EOT;
     <section tabindex="1">
       <h1>Warenkorb</h1>
       <!--Dynamischer Teil -->
-      <form action="https://echo.fbi.h-da.de/" method="post">
+      <form action="kunde.php" method="post">
         <!--Dropdownmenu -->
         <select multiple name="basket[]" id="myList" size="5" tabindex="2">
-          <option value="1">Pizza Margherita</option>
-          <option value="2">Pizza Salami</option>
+          <option value="1">Pizza Salami</option>
+          <option value="2">Pizza Margherita</option>
           <option value="3">Pizza Hawaii</option>
+          <option value="4">Pizza Marinara</option>
+          <option value="5">Pizza Hühnchen</option>
         </select>
         <!--Maximalpreis -->
         <p>14.50€</p>			
@@ -96,6 +98,7 @@ EOT;
     </section> 
 
 EOT;
+
     $this->generatePageFooter();
   }
 
@@ -119,3 +122,5 @@ EOT;
 }
 
 Orderpage::main();
+
+?>
