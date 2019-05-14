@@ -97,9 +97,6 @@ EOT;
       }
       header('Location: kunde.php');
     }
-
-    //$page = 'kunde.php';
-    //header('Location: ' . $page, true, 303);
   }
 
 	public static function main() {
