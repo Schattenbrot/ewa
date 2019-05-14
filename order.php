@@ -6,16 +6,18 @@ class Order {
 	private $orderID;
 	private $adresse;
 	private $ordertime;
+	private $status;
 	private $pizza_list = array();
 
 	//function __construct($adresse) {
 	//	$this->adresse = $adresse;
 	//}
 
-	function __construct($orderID, $adresse, $ordertime) {
+	function __construct($orderID, $adresse, $ordertime, $status) {
 		$this->orderID = $orderID;
 		$this->adresse = $adresse;
 		$this->ordertime = $ordertime;
+		$this->status = $status;
 	} 
 	function addPizza($pizza) {
 		$pizza_list = $pizza;
@@ -30,7 +32,11 @@ class Order {
 
 	function getPizzaList() {
     return $this->pizza_list;
-  }
+	}
+	
+	function getStatus() {
+		return $this->status;
+	}
 }
 
 ?>
