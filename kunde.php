@@ -56,7 +56,7 @@ class Customer extends Page {
     echo <<<EOT
     <nav>
       <ul>
-        <li><a href="bestellung.php">Bestellung</bestellung></a></li>
+        <li><a href="bestellung.php">Bestellung</a></li>
         <li><a href="baecker.php">Bäcker</a></li>
         <li><a href="fahrer.php">Fahrer</a></li>
         <li class="current"><a href="kunde.php">Kunde</a></li>

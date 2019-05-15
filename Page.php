@@ -98,7 +98,7 @@ abstract class Page
                 <title><?php echo "{$headline}" ?></title>
             <?php
             echo ( $headline == 'Bäcker' || $headline == 'Fahrer') ?
-                '<meta http-equiv="refresh" content="5">' : ''
+                '<meta http-equiv="refresh" content="10">' : ''
                 ?>
         </head>
         <body>

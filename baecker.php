@@ -8,7 +8,7 @@
  */
 
 require_once './Page.php';
-require_once './Pizza.php';
+require_once './Order.php';
 
 class Baker extends Page {
   private $sessionId;
@@ -28,7 +28,12 @@ class Baker extends Page {
   protected function getViewData() {
     $pizza_list[] = array();
 
-    $sql = "SELECT angebot.PizzaName, angebot.Bilddatei, angebot.Preis FROM bestelltepizza left join angebot on bestelltepizza.fPizzaNummer = angebot.PizzaNummer";//bestelltepizza left join angebot on bestelltepizza.fPizzaNummber=angebot.PizzaNummer";
+		$sql = "SELECT bestellung.BestellungID, bestellung.Adresse, 
+			bestelltepizza.Status, angebot.PizzaName, angebot.Preis
+      FROM bestelltepizza 
+			LEFT JOIN bestellung ON bestelltepizza.fBestellungID=bestellung.BestellungID
+			LEFT JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
+      ORDER BY bestelltepizza.fBestellungID ASC, bestelltepizza.Status ASC";
 
     $recordset = $this->_database->query($sql);
     if(!$recordset) {
@@ -36,8 +41,8 @@ class Baker extends Page {
     }
 
     while ($record = $recordset->fetch_assoc()) {
-      $pizza = new Pizza($record['PizzaName'], $record['Bilddatei'], $record['Preis']);
-      $this->pizza_list[] = $pizza;
+			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
+      $this->pizza_list[] = $order;
     }
     $recordset->free();
     return $pizza_list;
@@ -48,33 +53,72 @@ class Baker extends Page {
     $this->generatePageHeader('Bäcker');
 
     echo <<<EOT
-    <form>
-      <h3>Bestellung</h3>
-      <p>Bestellt</p>
-      <p>Ofen</p>
-      <p>Fertig</p>
+    <nav>
+      <ul>
+        <li><a href="bestellung.php">Bestellung</a></li>
+        <li class="current"><a href="baecker.php">Bäcker</a></li>
+        <li><a href="fahrer.php">Fahrer</a></li>
+        <li><a href="kunde.php">Kunde</a></li>
+      </ul>
+    </nav>
+
+    <h3>Bestellung</h3>
+    <p>Bestellt</p>
+    <p>Ofen</p>
+    <p>Fertig</p>
 EOT;
-      if(isset($this->pizza_list)) {
-        $i = 0;
-        foreach($this->pizza_list as $value) {
-          $_pizza = $value;
-          echo <<<EOT
-          <p>{$_pizza->PizzaName}
-            <input type="radio" name="radio_{$i}" value="" checked>
-            <input type="radio" name="radio_{$i}" value="">
-            <input type="radio" name="radio_{$i}" value="">
-          </p>
+    if(isset($this->pizza_list)) {
+      $i = 0;
+      foreach($this->pizza_list as $value) {
+        $_pizza = $value;
+        if ($_pizza->getStatus() <= 3){
+            echo <<<EOT
+            <form action="baecker.php" method="post">
+              <p>{$_pizza->getPizzaName()}
 EOT;
+              if ($_pizza->getStatus() == 1) {
+                echo <<<EOT
+                <input type="radio" name="radio" value="bestellt" checked>
+                <input type="radio" name="radio" value="inZubereitung">
+                <input type="radio" name="radio" value="fertig">
+EOT;
+              }
+              if ($_pizza->getStatus() == 2) {
+                echo <<<EOT
+                <input type="radio" name="radio" value="bestellt">
+                <input type="radio" name="radio" value="inZubereitung" checked>
+                <input type="radio" name="radio" value="fertig">
+EOT;
+              }
+              if ($_pizza->getStatus() == 3) {
+                echo <<<EOT
+                <input type="radio" name="radio" value="bestellt">
+                <input type="radio" name="radio" value="inZubereitung">
+                <input type="radio" name="radio" value="fertig" checked>
+EOT;
+              }
+              echo <<<EOT
+                <input type="submit" name="changedPizza" value="{$_pizza->getOrderID()}">
+              </p>
+            </form>
+EOT;
+          }
           $i++;
         }
       }
-    echo('</form>');
-
+ 
     $this->generatePageFooter();
   }
 
   protected function processReceivedData() {
     parent::processReceivedData();
+
+    if(isset($_POST['radio'])) {
+      $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['radio']}'
+        WHERE fBestellungID='{$_POST['changedPizza']}'";
+      $recordset = $this->_database->query($sqlpost);
+      header('Location: baecker.php');
+    }
   }
 
   public static function main() {

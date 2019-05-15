@@ -29,9 +29,11 @@ class Driver extends Page {
 		$order_list = array();
 		
 		$sql = "SELECT bestellung.BestellungID, bestellung.Adresse, 
-			bestellung.Bestellzeitpunkt, bestelltepizza.Status 
-      FROM bestelltepizza JOIN bestellung 
-      ON bestelltepizza.fBestellungID=bestellung.BestellungID";
+			bestelltepizza.Status, angebot.PizzaName, angebot.Preis
+      FROM bestelltepizza 
+			LEFT JOIN bestellung ON bestelltepizza.fBestellungID=bestellung.BestellungID
+			LEFT JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
+			ORDER BY bestelltepizza.fBestellungID ASC, bestelltepizza.Status ASC";
 
 		$recordset = $this->_database->query($sql);
 		if(!$recordset) {
@@ -39,50 +41,73 @@ class Driver extends Page {
 		}
 
 		while ($record = $recordset->fetch_assoc()) {
-			$order = new Order($record['BestellungID'], $record['Adresse'], $record['Bestellzeitpunkt'], $record['Status']);
+			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
 			$this->order_list[] = $order;
 		}
 
 		$recordset->free();
+
+
 		return $order_list;
 	}
 
 	protected function generateView() {
 		$this->getViewData();
     $this->generatePageHeader('Fahrer');
-    
+    echo <<<EOT
+    <nav>
+      <ul>
+        <li><a href="bestellung.php">Bestellung</a></li>
+        <li class="current"><a href="baecker.php">Bäcker</a></li>
+        <li><a href="fahrer.php">Fahrer</a></li>
+        <li><a href="kunde.php">Kunde</a></li>
+      </ul>
+		</nav>
+EOT;
 		if(isset($this->order_list)) {
+			$orderID;
+			$countPrintedOrders = 0;
+			$tabindex = 1;
 			foreach($this->order_list as $value) {
-        $_order = $value;
-        if ($_order->getStatus() != 'bestellt' && $_order->getStatus() != 'inZubereitung') {
-          echo <<<EOT
-          <p>
-            Order: {$_order->getOrderID()}
-            Preis: XXX€
-            Adresse: {$_order->getAdresse()}
-            <label for="statusList">Status: </label>
-            <select name ="status" id="statusList" size="1">
+				$_order = $value;
+				if ($_order->getStatus() < 3) {
+					$orderID = $_order->getOrderID();
+					continue;
+				} else if ($_order->getStatus() >= 3 && $_order->getOrderID() != $orderID) {
+					$countPrintedOrders++;
+					echo <<<EOT
+					<form action="fahrer.php" method="post">
+						<p>
+							Order: {$_order->getOrderID()}
+							Preis: {$_order->getPrice()}€
+							Adresse: {$_order->getAdresse()}
+							<label for="statusList_{$countPrintedOrders}">Status: </label>
+							<select name ="status" id="statusList_{$countPrintedOrders}" size="1" tabindex="{$tabindex}">
 EOT;
-            if ($_order->getStatus() == 'fertig') {
-              echo "<option value=" . 1 . " selected>fertig</option>";
-              echo "<option value=" . 2 . ">unterwegs</option>";
-              echo "<option value=" . 3 . ">geliefert</option>";
-            }
-            if ($_order->getStatus() == 'inZustellung') {
-              echo "<option value=" . 1 . ">fertig</option>";
-              echo "<option value=" . 2 . " selected>unterwegs</option>";
-              echo "<option value=" . 3 . ">geliefert</option>";
-            }
-            if ($_order->getStatus() == 'zugestellt') {
-              echo "<option value=" . 1 . ">fertig</option>";
-              echo "<option value=" . 2 . ">unterwegs</option>";
-              echo "<option value=" . 3 . " selected>geliefert</option>";
-            }
-            echo <<<EOT
-            </select>
-              Bestellung: Pizza1, Pizza2
-            </p>
+							$tabindex++;
+							if ($_order->getStatus() == 3) {
+								echo "<option value=" . 3 . " selected>fertig</option>";
+								echo "<option value=" . 4 . ">unterwegs</option>";
+								echo "<option value=" . 5 . ">geliefert</option>";
+							}
+							if ($_order->getStatus() == 4) {
+								echo "<option value=" . 3 . ">fertig</option>";
+								echo "<option value=" . 4 . " selected>unterwegs</option>";
+								echo "<option value=" . 5 . ">geliefert</option>";
+							}
+							if ($_order->getStatus() == 5) {
+								echo "<option value=" . 3 . ">fertig</option>";
+								echo "<option value=" . 4 . ">unterwegs</option>";
+								echo "<option value=" . 5 . " selected>geliefert</option>";
+							}
+							echo <<<EOT
+							</select>
+							Bestellung: {$_order->getPizzaName()}
+							<input type="submit" name="order" value="{$_order->getOrderID()}" tabindex={$tabindex}>
+						</p>
+					</form>
 EOT;
+					$tabindex++;
         }
 			}
 		}
@@ -91,6 +116,13 @@ EOT;
 
 	protected function processReceivedData() {
 		parent::processReceivedData();
+		
+		if(isset($_POST['status'])) {
+			$sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['status']}'
+				WHERE fBestellungID='{$_POST['order']}'";
+			$recordset = $this->_database->query($sqlpost);
+			header('Location: fahrer.php');
+		}
 	}
 
 	public static function main() {

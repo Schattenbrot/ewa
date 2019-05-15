@@ -5,23 +5,17 @@ require_once './Pizza.php';
 class Order {
 	private $orderID;
 	private $adresse;
-	private $ordertime;
 	private $status;
-	private $pizza_list = array();
+	private $pizzaName;
+	private $price;
 
-	//function __construct($adresse) {
-	//	$this->adresse = $adresse;
-	//}
-
-	function __construct($orderID, $adresse, $ordertime, $status) {
+	function __construct($orderID, $adresse, $pizzaName, $status, $price) {
 		$this->orderID = $orderID;
 		$this->adresse = $adresse;
-		$this->ordertime = $ordertime;
+		$this->pizzaName = $pizzaName;
 		$this->status = $status;
+		$this->price = $price;
 	} 
-	function addPizza($pizza) {
-		$pizza_list = $pizza;
-	}
 	function getOrderID() {
 		return $this->orderID;
 	}
@@ -29,14 +23,30 @@ class Order {
 	function getAdresse() {
 		return $this->adresse;
 	}
-
-	function getPizzaList() {
-    return $this->pizza_list;
-	}
 	
 	function getStatus() {
-		return $this->status;
-	}
+		if($this->status == "bestellt") {
+			return 1;
+		} else if ($this->status == "inZubereitung") {
+			return 2;
+		} else if ($this->status == "fertig") {
+			return 3;
+		} else if ($this->status == "inZustellung") {
+			return 4;
+		} else if ($this->status == "zugestellt") {
+			return 5;
+		} else {
+			return -1;
+		}
+  }
+  
+  function getPizzaName() {
+    return $this->pizzaName;
+  }
+
+  function getPrice() {
+    return $this->price;
+  }
 }
 
 ?>

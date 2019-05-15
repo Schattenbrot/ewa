@@ -56,6 +56,14 @@ class Orderpage extends Page
     $this->getViewData();
     $this->generatePageHeader('Bestellung');
     echo <<<EOT
+    <nav>
+      <ul>
+        <li><a href="bestellung.php">Bestellung</a></li>
+        <li class="current"><a href="baecker.php">Bäcker</a></li>
+        <li><a href="fahrer.php">Fahrer</a></li>
+        <li><a href="kunde.php">Kunde</a></li>
+      </ul>
+		</nav>
     <section>
       <h1>Bestellung</h1>
       <h2>Speisekarte</h2>
