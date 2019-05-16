@@ -8,6 +8,7 @@ class Order {
 	private $status;
 	private $pizzaName;
 	private $price;
+	private $pizzaID;
 
 	function __construct($orderID, $adresse, $pizzaName, $status, $price) {
 		$this->orderID = $orderID;
@@ -19,6 +20,13 @@ class Order {
 	function getOrderID() {
 		return $this->orderID;
 	}
+
+	function setPizzaID($id) {
+		$this->pizzaID = $id;
+  }
+  function getPizzaID() {
+    return $this->pizzaID;
+  }
 
 	function getAdresse() {
 		return $this->adresse;

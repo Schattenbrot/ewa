@@ -28,8 +28,8 @@ class Baker extends Page {
   protected function getViewData() {
     $pizza_list[] = array();
 
-		$sql = "SELECT bestellung.BestellungID, bestellung.Adresse, 
-			bestelltepizza.Status, angebot.PizzaName, angebot.Preis
+		$sql = "SELECT bestellung.BestellungID, bestellung.Adresse,
+			bestelltepizza.Status, bestelltepizza.PizzaID, angebot.PizzaName, angebot.Preis
       FROM bestelltepizza 
 			LEFT JOIN bestellung ON bestelltepizza.fBestellungID=bestellung.BestellungID
 			LEFT JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
@@ -41,7 +41,8 @@ class Baker extends Page {
     }
 
     while ($record = $recordset->fetch_assoc()) {
-			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
+      $order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
+      $order->setPizzaID($record['PizzaID']);
       $this->pizza_list[] = $order;
     }
     $recordset->free();
@@ -74,7 +75,7 @@ EOT;
         if ($_pizza->getStatus() <= 3){
             echo <<<EOT
             <form action="baecker.php" method="post">
-              <p>{$_pizza->getPizzaName()}
+              <p>{$_pizza->getOrderID()}: {$_pizza->getPizzaName()}
 EOT;
               if ($_pizza->getStatus() == 1) {
                 echo <<<EOT
@@ -98,7 +99,7 @@ EOT;
 EOT;
               }
               echo <<<EOT
-                <input type="submit" name="changedPizza" value="{$_pizza->getOrderID()}">
+                <input type="submit" name="changedPizza" value="{$_pizza->getPizzaID()}">
               </p>
             </form>
 EOT;
@@ -115,7 +116,7 @@ EOT;
 
     if(isset($_POST['radio'])) {
       $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['radio']}'
-        WHERE fBestellungID='{$_POST['changedPizza']}'";
+        WHERE PizzaID='{$_POST['changedPizza']}'";
       $recordset = $this->_database->query($sqlpost);
       header('Location: baecker.php');
     }
