@@ -81,6 +81,7 @@ EOT;
     if(isset($_POST['adresse']) && isset($_POST['basket'])) {
       $date = new DateTime();
       $orderTime = $date->format('Y-m-d H:i:s');
+      $_POST['adresse'] = $this->_database->real_escape_string($_POST['adresse']);
 
       $sqlpost = "INSERT INTO bestellung (Adresse, Bestellzeitpunkt) VALUES ('{$_POST['adresse']}', '{$orderTime}')";
       $recordset = $this->_database->query($sqlpost);
