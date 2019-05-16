@@ -78,26 +78,6 @@ EOT;
 
   protected function processReceivedData() {
     parent::processReceivedData();
-    if(isset($_POST['adresse']) && isset($_POST['basket'])) {
-      $date = new DateTime();
-      $orderTime = $date->format('Y-m-d H:i:s');
-      $_POST['adresse'] = $this->_database->real_escape_string($_POST['adresse']);
-
-      $sqlpost = "INSERT INTO bestellung (Adresse, Bestellzeitpunkt) VALUES ('{$_POST['adresse']}', '{$orderTime}')";
-      $recordset = $this->_database->query($sqlpost);
-
-      $sqlGetOrderID = "SELECT BestellungID FROM bestellung WHERE Adresse='{$_POST['adresse']}' AND Bestellzeitpunkt='{$orderTime}'";
-      $recordset = $this->_database->query($sqlGetOrderID);
-      while ($record = $recordset->fetch_assoc()) {
-        $this->orderID = $record['BestellungID'];
-      }
-      foreach ($_POST['basket'] as $pizzaid) {
-        //$pizzaid = $_POST['basket'][0];
-        $sqlInsertBestelltePizza = "INSERT INTO bestelltepizza (fBestellungID, fPizzaNummer) VALUES ('{$this->orderID}', '{$pizzaid}')";
-        $recordset = $this->_database->query($sqlInsertBestelltePizza);
-      }
-      header('Location: kunde.php');
-    }
   }
 
 	public static function main() {
