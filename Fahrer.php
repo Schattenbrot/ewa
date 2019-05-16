@@ -41,6 +41,7 @@ class Driver extends Page {
 		}
 
 		while ($record = $recordset->fetch_assoc()) {
+			$record['Adresse'] = htmlspecialchars($record['Adresse']);
 			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
 			$this->order_list[] = $order;
 		}

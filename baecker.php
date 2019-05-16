@@ -33,7 +33,7 @@ class Baker extends Page {
       FROM bestelltepizza 
 			LEFT JOIN bestellung ON bestelltepizza.fBestellungID=bestellung.BestellungID
 			LEFT JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
-      ORDER BY bestelltepizza.fBestellungID ASC, bestelltepizza.Status ASC";
+      ORDER BY bestelltepizza.fBestellungID ASC";
 
     $recordset = $this->_database->query($sql);
     if(!$recordset) {
