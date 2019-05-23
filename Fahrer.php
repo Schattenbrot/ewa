@@ -41,14 +41,11 @@ class Driver extends Page {
 		}
 
 		while ($record = $recordset->fetch_assoc()) {
-			$record['Adresse'] = htmlspecialchars($record['Adresse']);
 			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
 			$this->order_list[] = $order;
 		}
 
 		$recordset->free();
-
-
 		return $order_list;
 	}
 
@@ -66,49 +63,48 @@ class Driver extends Page {
 		</nav>
 EOT;
 		if(isset($this->order_list)) {
-			$orderID;
+			$orderID = 0;
 			$countPrintedOrders = 0;
-			$tabindex = 1;
+			$formid = 0;
 			foreach($this->order_list as $value) {
-				$_order = $value;
+        $_order = $value;
+        $currOrderID = htmlspecialchars($_order->getOrderID());
+        $currPrice = htmlspecialchars($_order->getPrice());
+        $currAdresse = htmlspecialchars($_order->getAdresse());
+        $currPizzaName = htmlspecialchars($_order->getPizzaName());
 				if ($_order->getStatus() < 3) {
 					$orderID = $_order->getOrderID();
 					continue;
-				} else if ($_order->getStatus() >= 3 && $_order->getOrderID() != $orderID) {
+				} else if ($_order->getStatus() >= 3 && $_order->getStatus() <= 4 && $_order->getOrderID() != $orderID) {
 					$countPrintedOrders++;
 					echo <<<EOT
-					<form action="fahrer.php" method="post">
+					<form action="fahrer.php" method="post" id="{$formid}">
 						<p>
-							Order: {$_order->getOrderID()}
-							Preis: {$_order->getPrice()}€
-							Adresse: {$_order->getAdresse()}
-							<label for="statusList_{$countPrintedOrders}">Status: </label>
-							<select name ="status" id="statusList_{$countPrintedOrders}" size="1" tabindex="{$tabindex}">
+							Order: {$currOrderID}
+							Preis: {$currPrice}€
+							Adresse: {$currAdresse}
+							<input type="hidden" name="order" value="{$currOrderID}">
 EOT;
-							$tabindex++;
 							if ($_order->getStatus() == 3) {
-								echo "<option value=" . 3 . " selected>fertig</option>";
-								echo "<option value=" . 4 . ">unterwegs</option>";
-								echo "<option value=" . 5 . ">geliefert</option>";
+								echo <<<EOT
+								<input type="radio" name="status" value="fertig" checked>
+								<input type="radio" name="status" value="inZustellung" onclick="document.forms['{$formid}'].submit();">
+								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
+EOT;
 							}
 							if ($_order->getStatus() == 4) {
-								echo "<option value=" . 3 . ">fertig</option>";
-								echo "<option value=" . 4 . " selected>unterwegs</option>";
-								echo "<option value=" . 5 . ">geliefert</option>";
-							}
-							if ($_order->getStatus() == 5) {
-								echo "<option value=" . 3 . ">fertig</option>";
-								echo "<option value=" . 4 . ">unterwegs</option>";
-								echo "<option value=" . 5 . " selected>geliefert</option>";
+								echo <<<EOT
+								<input type="radio" name="status" value="fertig" onclick="document.forms['{$formid}'].submit();">
+								<input type="radio" name="status" value="inZustellung" checked>
+								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
+EOT;
 							}
 							echo <<<EOT
-							</select>
-							Bestellung: {$_order->getPizzaName()}
-							<input type="submit" name="order" value="{$_order->getOrderID()}" tabindex={$tabindex}>
+							Bestellung: {$currPizzaName}
 						</p>
 					</form>
 EOT;
-					$tabindex++;
+					$formid++;
         }
 			}
 		}
@@ -116,13 +112,18 @@ EOT;
 	}
 
 	protected function processReceivedData() {
-		parent::processReceivedData();
-		
-		if(isset($_POST['status'])) {
-			$sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['status']}'
-				WHERE fBestellungID='{$_POST['order']}'";
+    parent::processReceivedData();
+    if(isset($_POST['status']) &&
+      isset($_POST['order']) && is_numeric($_POST['order'])) {
+      $sqlpost;
+      if ($_POST['status'] == "zugestellt") {
+        $sqlpost = "DELETE FROM bestellung WHERE BestellungID='{$_POST['order']}'";
+      } else {
+        $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['status']}'
+          WHERE fBestellungID='{$_POST['order']}'";
+      }
 			$recordset = $this->_database->query($sqlpost);
-			header('Location: fahrer.php');
+			//header('Location: fahrer.php');
 		}
 	}
 
