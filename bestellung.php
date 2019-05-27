@@ -85,7 +85,7 @@ EOT;
     <section tabindex="1">
       <h1>Warenkorb</h1>
       <!--Dynamischer Teil -->
-      <form action="kunde.php" method="post">
+      <form action="bestellung.php" method="post">
         <!--Dropdownmenu -->
         <select multiple name="basket[]" id="myList" size="5" tabindex="2">
           <option value="1">Pizza Salami</option>
@@ -125,9 +125,9 @@ EOT;
       $recordset = $this->_database->query($sqlGetOrderID);
       while ($record = $recordset->fetch_assoc()) {
         $this->orderID = $record['BestellungID'];
+        $_SESSION['sessionId'] = $this->orderID;
       }
       foreach ($_POST['basket'] as $pizzaid) {
-        //$pizzaid = $_POST['basket'][0];
         $sqlInsertBestelltePizza = "INSERT INTO bestelltepizza (fBestellungID, fPizzaNummer) VALUES ('{$this->orderID}', '{$pizzaid}')";
         $recordset = $this->_database->query($sqlInsertBestelltePizza);
       }

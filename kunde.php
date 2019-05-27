@@ -31,6 +31,7 @@ class Customer extends Page {
 
     $sql = "SELECT angebot.PizzaName, bestelltepizza.status FROM bestelltepizza 
       JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
+      WHERE bestelltepizza.fBestellungID='{$this->sessionId}'
       ORDER BY bestelltepizza.fBestellungID ASC";
     
     $recordset = $this->_database->query($sql);
@@ -41,7 +42,6 @@ class Customer extends Page {
 
     while ($record = $recordset->fetch_assoc()) {
       $pizza = array($record['PizzaName'], $record['status']);
-      //$pizza = new Pizza($record['PizzaName'], $record['Bilddatei'], $record['Preis']);
       $this->pizza_list[] = $pizza;
     }
 
@@ -63,7 +63,7 @@ class Customer extends Page {
       </ul>
     </nav>
 
-    <h2>Bestellung: {$this->orderID}</h2>
+    <h2>Bestellung: {$this->sessionId}</h2>
 EOT;
     if (isset($this->pizza_list)) {
       foreach ($this->pizza_list as $_pizza) {
