@@ -70,39 +70,41 @@ class Baker extends Page {
 EOT;
     if(isset($this->pizza_list)) {
       $i = 0;
+      $formid = 0;
       foreach($this->pizza_list as $value) {
         $_pizza = $value;
         if ($_pizza->getStatus() <= 3){
             echo <<<EOT
-            <form action="baecker.php" method="post">
+            <form action="baecker.php" method="post" id="{$formid}">
+              <input type="hidden" name="changedPizza" value="{$_pizza->getPizzaID()}">
               <p>{$_pizza->getOrderID()}: {$_pizza->getPizzaName()}
 EOT;
               if ($_pizza->getStatus() == 1) {
                 echo <<<EOT
                 <input type="radio" name="radio" value="bestellt" checked>
-                <input type="radio" name="radio" value="inZubereitung">
-                <input type="radio" name="radio" value="fertig">
+                <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['{$formid}'].submit();">
+                <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
 EOT;
               }
               if ($_pizza->getStatus() == 2) {
                 echo <<<EOT
-                <input type="radio" name="radio" value="bestellt">
+                <input type="radio" name="radio" value="bestellt" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="inZubereitung" checked>
-                <input type="radio" name="radio" value="fertig">
+                <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
 EOT;
               }
               if ($_pizza->getStatus() == 3) {
                 echo <<<EOT
-                <input type="radio" name="radio" value="bestellt">
-                <input type="radio" name="radio" value="inZubereitung">
+                <input type="radio" name="radio" value="bestellt" onclick="document.forms['{$formid}'].submit();">
+                <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="fertig" checked>
 EOT;
               }
               echo <<<EOT
-                <input type="submit" name="changedPizza" value="{$_pizza->getPizzaID()}">
               </p>
             </form>
 EOT;
+            $formid++;
           }
           $i++;
         }
@@ -115,6 +117,7 @@ EOT;
     parent::processReceivedData();
 
     if(isset($_POST['radio'])) {
+      print_r($_POST['changedPizza']);
       $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['radio']}'
         WHERE PizzaID='{$_POST['changedPizza']}'";
       $recordset = $this->_database->query($sqlpost);
