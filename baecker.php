@@ -76,6 +76,7 @@ EOT;
             echo <<<EOT
             <form action="baecker.php" method="post" id="{$formid}">
               <p>{$_pizza->getOrderID()}: {$_pizza->getPizzaName()}
+              <input type="hidden" name="changedPizza" value="{$_pizza->getPizzaID()}">
 EOT;
               if ($_pizza->getStatus() == 1) {
                 echo <<<EOT
@@ -99,13 +100,12 @@ EOT;
 EOT;
               }
               echo <<<EOT
-                <input type="submit" name="changedPizza" value="{$_pizza->getPizzaID()}">
               </p>
             </form>
 EOT;
+            $formid++;
           }
           $i++;
-          $formid++;
         }
       }
  
