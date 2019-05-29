@@ -71,6 +71,11 @@ EOT;
       if(isset($this->pizza_list)) {
         foreach ($this->pizza_list as $value) {
           $_pizza = $value;
+          
+          $_pizza->PizzaName = htmlspecialchars($_pizza->PizzaName);
+          $_pizza->Bilddatei = htmlspecialchars($_pizza->Bilddatei);
+          $_pizza->Preis = htmlspecialchars($_pizza->Preis);
+
           echo <<<EOT
           <p>
             <img src="{$_pizza->Bilddatei}" alt="$_pizza->PizzaName">
@@ -93,6 +98,7 @@ EOT;
           <option value="3">Pizza Hawaii</option>
           <option value="4">Pizza Marinara</option>
           <option value="5">Pizza Hühnchen</option>
+          <option value="6">Pizza TEst</option>
         </select>
         <!--Maximalpreis -->
         <p>14.50€</p>			
@@ -116,7 +122,9 @@ EOT;
     if(isset($_POST['adresse']) && isset($_POST['basket'])) {
       $date = new DateTime();
       $orderTime = $date->format('Y-m-d H:i:s');
+
       $_POST['adresse'] = $this->_database->real_escape_string($_POST['adresse']);
+      $orderTime = $this->_database->real_escape_string($orderTime);
 
       $sqlpost = "INSERT INTO bestellung (Adresse, Bestellzeitpunkt) VALUES ('{$_POST['adresse']}', '{$orderTime}')";
       $recordset = $this->_database->query($sqlpost);
@@ -128,6 +136,7 @@ EOT;
         $_SESSION['sessionId'] = $this->orderID;
       }
       foreach ($_POST['basket'] as $pizzaid) {
+        $pizzaid = $this->_database->real_escape_string($pizzaid);
         $sqlInsertBestelltePizza = "INSERT INTO bestelltepizza (fBestellungID, fPizzaNummer) VALUES ('{$this->orderID}', '{$pizzaid}')";
         $recordset = $this->_database->query($sqlInsertBestelltePizza);
       }

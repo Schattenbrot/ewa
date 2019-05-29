@@ -71,11 +71,12 @@ EOT;
         $currOrderID = htmlspecialchars($_order->getOrderID());
         $currPrice = htmlspecialchars($_order->getPrice());
         $currAdresse = htmlspecialchars($_order->getAdresse());
-        $currPizzaName = htmlspecialchars($_order->getPizzaName());
-				if ($_order->getStatus() < 3) {
+				$currPizzaName = htmlspecialchars($_order->getPizzaName());
+				$currStatus = htmlspecialchars($_order->getStatus());
+				if ($currStatus < 3) {
 					$orderID = $_order->getOrderID();
 					continue;
-				} else if ($_order->getStatus() >= 3 && $_order->getStatus() <= 4 && $_order->getOrderID() != $orderID) {
+				} else if ($currStatus >= 3 && $currStatus <= 4 && $_order->getOrderID() != $orderID) {
 					$countPrintedOrders++;
 					echo <<<EOT
 					<form action="fahrer.php" method="post" id="{$formid}">
@@ -85,14 +86,14 @@ EOT;
 							Adresse: {$currAdresse}
 							<input type="hidden" name="order" value="{$currOrderID}">
 EOT;
-							if ($_order->getStatus() == 3) {
+							if ($currStatus == 3) {
 								echo <<<EOT
 								<input type="radio" name="status" value="fertig" checked>
 								<input type="radio" name="status" value="inZustellung" onclick="document.forms['{$formid}'].submit();">
 								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
 EOT;
 							}
-							if ($_order->getStatus() == 4) {
+							if ($currStatus == 4) {
 								echo <<<EOT
 								<input type="radio" name="status" value="fertig" onclick="document.forms['{$formid}'].submit();">
 								<input type="radio" name="status" value="inZustellung" checked>
@@ -115,12 +116,15 @@ EOT;
     parent::processReceivedData();
     if(isset($_POST['status']) &&
       isset($_POST['order']) && is_numeric($_POST['order'])) {
+			$_POST['status'] = $this->_database->real_escape_string($_POST['status']);
+			//$_POST['order'] = $this->_database->real_escape_string($_POST['order']);
+
       $sqlpost;
       if ($_POST['status'] == "zugestellt") {
         $sqlpost = "DELETE FROM bestellung WHERE BestellungID='{$_POST['order']}'";
       } else {
         $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['status']}'
-          WHERE fBestellungID='{$_POST['order']}'";
+          WHERE fBestellungID={$_POST['order']}";
       }
 			$recordset = $this->_database->query($sqlpost);
 			//header('Location: fahrer.php');

@@ -31,7 +31,7 @@ class Customer extends Page {
 
     $sql = "SELECT angebot.PizzaName, bestelltepizza.status FROM bestelltepizza 
       JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
-      WHERE bestelltepizza.fBestellungID='{$this->sessionId}'
+      WHERE bestelltepizza.fBestellungID={$this->sessionId}
       ORDER BY bestelltepizza.fBestellungID ASC";
     
     $recordset = $this->_database->query($sql);
@@ -53,6 +53,7 @@ class Customer extends Page {
   protected function generateView() {
     $this->getViewData();
     $this->generatePageHeader('Kunde');
+
     echo <<<EOT
     <nav>
       <ul>
@@ -67,6 +68,8 @@ class Customer extends Page {
 EOT;
     if (isset($this->pizza_list)) {
       foreach ($this->pizza_list as $_pizza) {
+        $_pizza[0] = htmlspecialchars($_pizza[0]);
+        $_pizza[1] = htmlspecialchars($_pizza[1]);
         echo <<<EOT
         <p>{$_pizza[0]}: {$_pizza[1]}</p>
 EOT;

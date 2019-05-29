@@ -26,14 +26,14 @@ class Baker extends Page {
   }
 
   protected function getViewData() {
-    $pizza_list[] = array();
+    $order_list[] = array();
 
 		$sql = "SELECT bestellung.BestellungID, bestellung.Adresse,
 			bestelltepizza.Status, bestelltepizza.PizzaID, angebot.PizzaName, angebot.Preis
       FROM bestelltepizza 
 			LEFT JOIN bestellung ON bestelltepizza.fBestellungID=bestellung.BestellungID
 			LEFT JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
-      ORDER BY bestelltepizza.fBestellungID ASC";
+      ORDER BY bestelltepizza.fBestellungID, bestelltepizza.Status ASC";
 
     $recordset = $this->_database->query($sql);
     if(!$recordset) {
@@ -43,10 +43,10 @@ class Baker extends Page {
     while ($record = $recordset->fetch_assoc()) {
       $order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
       $order->setPizzaID($record['PizzaID']);
-      $this->pizza_list[] = $order;
+      $this->order_list[] = $order;
     }
     $recordset->free();
-    return $pizza_list;
+    return $order_list;
   }
 
   protected function generateView() {
@@ -68,37 +68,42 @@ class Baker extends Page {
     <p>Ofen</p>
     <p>Fertig</p>
 EOT;
-    if(isset($this->pizza_list)) {
+    if(isset($this->order_list)) {
       $formid = 0;
-      foreach($this->pizza_list as $value) {
+      foreach($this->order_list as $value) {
         $_pizza = $value;
-        if ($_pizza->getStatus() <= 3){
+        $OrderID = htmlspecialchars($_pizza->getOrderID());
+        $PizzaName = htmlspecialchars($_pizza->getPizzaName());
+        $PizzaID = htmlspecialchars($_pizza->getPizzaID());
+        $Status = htmlspecialchars($_pizza->getStatus());
+        if ($Status < 3){
+          
             echo <<<EOT
             <form action="baecker.php" method="post" id="{$formid}">
-              <p>{$_pizza->getOrderID()}: {$_pizza->getPizzaName()}
-              <input type="hidden" name="changedPizza" value="{$_pizza->getPizzaID()}">
+              <p>{$OrderID}: {$PizzaName}
+              <input type="hidden" name="changedPizza" value="{$PizzaID}">
 EOT;
-              if ($_pizza->getStatus() == 1) {
+              if ($Status == 1) {
                 echo <<<EOT
                 <input type="radio" name="radio" value="bestellt" checked>
                 <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
 EOT;
               }
-              if ($_pizza->getStatus() == 2) {
+              if ($Status == 2) {
                 echo <<<EOT
                 <input type="radio" name="radio" value="bestellt" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="inZubereitung" checked>
                 <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
 EOT;
-              }
-              if ($_pizza->getStatus() == 3) {
+              }/*
+              if ($Status == 3) {
                 echo <<<EOT
                 <input type="radio" name="radio" value="bestellt" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['{$formid}'].submit();">
                 <input type="radio" name="radio" value="fertig" checked>
 EOT;
-              }
+              }*/
               echo <<<EOT
               </p>
             </form>
@@ -114,8 +119,9 @@ EOT;
   protected function processReceivedData() {
     parent::processReceivedData();
 
-    if(isset($_POST['radio'])) {
-      print_r($_POST['changedPizza']);
+    if(isset($_POST['radio']) && isset($_POST['changedPizza']) && is_numeric($_POST['changedPizza'])) {
+      $_POST['radio'] = $this->_database->real_escape_string($_POST['radio']);
+      $_POST['changedPizza'] = $this->_database->real_escape_string($_POST['changedPizza']);
       $sqlpost = "UPDATE bestelltepizza SET Status='{$_POST['radio']}'
         WHERE PizzaID='{$_POST['changedPizza']}'";
       $recordset = $this->_database->query($sqlpost);
