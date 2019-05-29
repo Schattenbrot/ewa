@@ -25,6 +25,18 @@ class Driver extends Page {
 		parent::__destruct();
 	}
 
+	protected function orderExists($order_list, $bestellungID) {
+		if (empty($order_list)) {
+			print_r("YEP EMPTY!");
+		}
+		foreach($order_list as $value) {
+			if ($value->getOrderID() == $bestellungID) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	protected function getViewData() {
 		$order_list = array();
 		
@@ -40,9 +52,20 @@ class Driver extends Page {
 			throw new Exception("Abfrage fehlgeschlagen: " . $this->_database->error);
 		}
 
+		$iterator = 0;
 		while ($record = $recordset->fetch_assoc()) {
-			$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
-			$this->order_list[] = $order;
+			if(empty($this->order_list)) {
+				$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
+				$this->order_list[] = $order;
+				$iterator++;
+			} else if ($this->orderExists($this->order_list, $record['BestellungID'])) {
+				$this->order_list[$iterator-1]->addPizza($record['PizzaName']);
+				$this->order_list[$iterator-1]->addPrice($record['Preis']);
+			} else if (!$this->orderExists($this->order_list, $record['BestellungID'])) {
+				$order = new Order($record['BestellungID'], $record['Adresse'], $record['PizzaName'], $record['Status'], $record['Preis']);
+				$this->order_list[] = $order;
+				$iterator++;
+			}
 		}
 
 		$recordset->free();
@@ -70,8 +93,18 @@ EOT;
         $_order = $value;
         $currOrderID = htmlspecialchars($_order->getOrderID());
         $currPrice = htmlspecialchars($_order->getPrice());
-        $currAdresse = htmlspecialchars($_order->getAdresse());
-				$currPizzaName = htmlspecialchars($_order->getPizzaName());
+				$currAdresse = htmlspecialchars($_order->getAdresse());
+				$currPizza = "";
+				$firstElem = true;
+				foreach($_order->getPizzaName() as $pizza) {
+					$pizza = htmlspecialchars($pizza);
+					if ($firstElem) {
+						$currPizza = $currPizza . $pizza;
+						$firstElem = false;
+					} else {
+						$currPizza = $currPizza . ", " . $pizza;
+					}
+				}
 				$currStatus = htmlspecialchars($_order->getStatus());
 				if ($currStatus < 3) {
 					$orderID = $_order->getOrderID();
@@ -100,8 +133,8 @@ EOT;
 								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
 EOT;
 							}
-							echo <<<EOT
-							Bestellung: {$currPizzaName}
+							echo 'Bestellung: ' . $currPizza;
+						echo <<<EOT
 						</p>
 					</form>
 EOT;
@@ -117,7 +150,6 @@ EOT;
     if(isset($_POST['status']) &&
       isset($_POST['order']) && is_numeric($_POST['order'])) {
 			$_POST['status'] = $this->_database->real_escape_string($_POST['status']);
-			//$_POST['order'] = $this->_database->real_escape_string($_POST['order']);
 
       $sqlpost;
       if ($_POST['status'] == "zugestellt") {
@@ -127,7 +159,6 @@ EOT;
           WHERE fBestellungID={$_POST['order']}";
       }
 			$recordset = $this->_database->query($sqlpost);
-			//header('Location: fahrer.php');
 		}
 	}
 

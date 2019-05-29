@@ -6,14 +6,14 @@ class Order {
 	private $orderID;
 	private $adresse;
 	private $status;
-	private $pizzaName;
+	private $pizzaName = array();
 	private $price;
 	private $pizzaID;
 
 	function __construct($orderID, $adresse, $pizzaName, $status, $price) {
 		$this->orderID = $orderID;
 		$this->adresse = $adresse;
-		$this->pizzaName = $pizzaName;
+		$this->pizzaName[] = $pizzaName;
 		$this->status = $status;
 		$this->price = $price;
 	} 
@@ -47,14 +47,22 @@ class Order {
 			return -1;
 		}
   }
-  
+	
+	function addPizza($pizza) {
+		$this->pizzaName[] = $pizza;
+	}
+
   function getPizzaName() {
     return $this->pizzaName;
   }
 
   function getPrice() {
     return $this->price;
-  }
+	}
+	
+	function addPrice($price) {
+		$this->price += $price;
+	}
 }
 
 ?>
