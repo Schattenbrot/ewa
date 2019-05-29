@@ -84,6 +84,7 @@ class Driver extends Page {
         <li><a href="kunde.php">Kunde</a></li>
       </ul>
 		</nav>
+
 EOT;
 		if(isset($this->order_list)) {
 			$orderID = 0;
@@ -112,7 +113,7 @@ EOT;
 				} else if ($currStatus >= 3 && $currStatus <= 4 && $_order->getOrderID() != $orderID) {
 					$countPrintedOrders++;
 					echo <<<EOT
-					<form action="fahrer.php" method="post" id="{$formid}">
+					<form action="fahrer.php" method="post" id="a{$formid}">
 						<p>
 							Order: {$currOrderID}
 							Preis: {$currPrice}€
@@ -122,15 +123,15 @@ EOT;
 							if ($currStatus == 3) {
 								echo <<<EOT
 								<input type="radio" name="status" value="fertig" checked>
-								<input type="radio" name="status" value="inZustellung" onclick="document.forms['{$formid}'].submit();">
-								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
+								<input type="radio" name="status" value="inZustellung" onclick="document.forms['a{$formid}'].submit();">
+								<input type="radio" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
 EOT;
 							}
 							if ($currStatus == 4) {
 								echo <<<EOT
-								<input type="radio" name="status" value="fertig" onclick="document.forms['{$formid}'].submit();">
+								<input type="radio" name="status" value="fertig" onclick="document.forms['a{$formid}'].submit();">
 								<input type="radio" name="status" value="inZustellung" checked>
-								<input type="radio" name="status" value="zugestellt" onclick="document.forms['{$formid}'].submit();">
+								<input type="radio" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
 EOT;
 							}
 							echo 'Bestellung: ' . $currPizza;

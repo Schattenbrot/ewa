@@ -79,22 +79,22 @@ EOT;
         if ($Status < 3){
           
             echo <<<EOT
-            <form action="baecker.php" method="post" id="{$formid}">
+            <form action="baecker.php" method="post" id="a{$formid}">
               <p>{$OrderID}: {$PizzaName}
               <input type="hidden" name="changedPizza" value="{$PizzaID}">
 EOT;
               if ($Status == 1) {
                 echo <<<EOT
                 <input type="radio" name="radio" value="bestellt" checked>
-                <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['{$formid}'].submit();">
-                <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
+                <input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();">
+                <input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();">
 EOT;
               }
               if ($Status == 2) {
                 echo <<<EOT
-                <input type="radio" name="radio" value="bestellt" onclick="document.forms['{$formid}'].submit();">
+                <input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();">
                 <input type="radio" name="radio" value="inZubereitung" checked>
-                <input type="radio" name="radio" value="fertig" onclick="document.forms['{$formid}'].submit();">
+                <input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();">
 EOT;
               }/*
               if ($Status == 3) {
