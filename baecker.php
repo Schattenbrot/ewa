@@ -69,20 +69,12 @@ class Baker extends Page {
     <p>Fertig</p>
 EOT;
     if(isset($this->pizza_list)) {
-<<<<<<< HEAD
-      $i = 0;
-=======
->>>>>>> 744263dcd9e5c28723f974e180de7d4d5d10bcef
       $formid = 0;
       foreach($this->pizza_list as $value) {
         $_pizza = $value;
         if ($_pizza->getStatus() <= 3){
             echo <<<EOT
             <form action="baecker.php" method="post" id="{$formid}">
-<<<<<<< HEAD
-              <input type="hidden" name="changedPizza" value="{$_pizza->getPizzaID()}">
-=======
->>>>>>> 744263dcd9e5c28723f974e180de7d4d5d10bcef
               <p>{$_pizza->getOrderID()}: {$_pizza->getPizzaName()}
               <input type="hidden" name="changedPizza" value="{$_pizza->getPizzaID()}">
 EOT;
