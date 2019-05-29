@@ -73,7 +73,7 @@ EOT;
       foreach($this->order_list as $value) {
         $_pizza = $value;
         $OrderID = htmlspecialchars($_pizza->getOrderID());
-        $PizzaName = htmlspecialchars($_pizza->getPizzaName());
+        $PizzaName = htmlspecialchars($_pizza->getPizzaName()[0]);
         $PizzaID = htmlspecialchars($_pizza->getPizzaID());
         $Status = htmlspecialchars($_pizza->getStatus());
         if ($Status < 3){
