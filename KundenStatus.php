@@ -9,21 +9,17 @@
  *
  * @category File
  * @package  Pizzaservice
- * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
+ * @author   Markus Stuber
+ * @author   Aaron Machill
  * @license  http://www.h-da.de  none
- * @Release  1.2
- * @link     http://www.fbi.h-da.de
+ * @Release  1.0
  */
-
-// to do: change name 'KundenStatus' throughout this file
 require_once './Page.php';
 
 class KundenStatus extends Page
 {
- private $sessionId;
+  private $sessionId;
  
-
   protected function __construct() {
     parent::__construct();
     if (!isset($_SESSION['sessionId'])) {
@@ -31,16 +27,12 @@ class KundenStatus extends Page
     }
     $this->sessionId = $_SESSION['sessionId'];
   }
-    
 
+  protected function __destruct() {
+      parent::__destruct();
+  }
 
-    protected function __destruct()
-    {
-        parent::__destruct();
-    }
-
-
-      protected function getViewData() {
+  protected function getViewData() {
     $pizza_list = array();
 
     $sql = "SELECT angebot.PizzaName, bestelltepizza.status FROM bestelltepizza 
@@ -48,53 +40,47 @@ class KundenStatus extends Page
 	  WHERE bestelltepizza.fBestellungID={$this->sessionId}
 	  ORDER BY bestelltepizza.fBestellungID ASC";
     
-	$db_query = $this->_database->query($sql);
-	if(!$db_query){
-		throw new Exception("Abfrage fehlgeschalgen: " . $this->_database->error);	
-	}
+	  $db_query = $this->_database->query($sql);
+	  if(!$db_query) {
+		  throw new Exception("Abfrage fehlgeschalgen: " . $this->_database->error);	
+	  }
    
-
     return $db_query;
-    }
+  }
 
-
-    protected function generateView()
-    {
-	 $bestellungen = $this->getViewData();
+  protected function generateView()
+  {
+    $bestellungen = $this->getViewData();
+    $recordset_array = array();
 	 
-	 $recordset_array = array();
+	  while($record = $bestellungen->fetch_assoc()){
+		  array_push($recordset_array, $record);
+	  }
 	 
-	 while($record = $bestellungen->fetch_assoc()){
-		 array_push($recordset_array, $record);
-	 }
+	  $SerializedData = json_encode($recordset_array);
 	 
-	 $SerializedData = json_encode($recordset_array);
-	 
-	 echo $SerializedData;
-	 $bestellungen->free();  
-	 }
-
-  
-    protected function processReceivedData()
-    {
-        parent::processReceivedData();
-		
-		header("Content-type: application/json; charset=UTF-8");
+	  echo $SerializedData;
+	  $bestellungen->free();  
 	}
 
+  protected function processReceivedData()
+  {
+    parent::processReceivedData();
+    header("Content-type: application/json; charset=UTF-8");
+	}
 
-    public static function main()
-    {
-        try {
-            $page = new KundenStatus();
-            $page->processReceivedData();
-            $page->generateView();
-        }
-        catch (Exception $e) {
-            header("Content-type: application/json; charset=UTF-8");
-            echo $e->getMessage();
-        }
+  public static function main()
+  {
+    try {
+      $page = new KundenStatus();
+      $page->processReceivedData();
+      $page->generateView();
     }
+    catch (Exception $e) {
+      header("Content-type: application/json; charset=UTF-8");
+      echo $e->getMessage();
+    }
+  }
 }
 
 // This call is starting the creation of the page.
@@ -106,4 +92,4 @@ KundenStatus::main();
 // Not specifying the closing ? >  helps to prevent accidents
 // like additional whitespace which will cause session
 // initialization to fail ("headers already sent").
-?>
+//? >
