@@ -96,6 +96,7 @@ abstract class Page
             <head>
                 <meta charset="UTF-8">
                 <title><?php echo "{$headline}" ?></title>
+                <script src="ECMAclass.js"></script>
             <?php
             echo ( $headline == 'Bäcker' || $headline == 'Fahrer') ?
                 '<meta http-equiv="refresh" content="10">' : ''

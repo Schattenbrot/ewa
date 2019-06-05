@@ -13,6 +13,7 @@ require_once './Pizza.php';
 class Orderpage extends Page
 {
   private $sessionId;
+  private $PREIS;
   
   protected function __construct()
   {
@@ -33,7 +34,7 @@ class Orderpage extends Page
   {
     $pizza_list = array();
     
-    $sql = "SELECT PizzaName, Bilddatei, Preis FROM angebot";
+    $sql = "SELECT PizzaNummer, PizzaName, Bilddatei, Preis FROM angebot";
 
     $recordset = $this->_database->query($sql);
     if (!$recordset)
@@ -43,6 +44,7 @@ class Orderpage extends Page
 
     while ($record = $recordset->fetch_assoc()) {
       $pizza = new Pizza($record['PizzaName'], $record['Bilddatei'], $record['Preis']);
+      $pizza->setPizzaID($record['PizzaNummer']);
       $this->pizza_list[] = $pizza;
     }
 
@@ -75,10 +77,12 @@ EOT;
           $_pizza->PizzaName = htmlspecialchars($_pizza->PizzaName);
           $_pizza->Bilddatei = htmlspecialchars($_pizza->Bilddatei);
           $_pizza->Preis = htmlspecialchars($_pizza->Preis);
+          $_pizza->pizzaID = htmlspecialchars($_pizza->pizzaID);
 
           echo <<<EOT
           <p>
-            <img src="{$_pizza->Bilddatei}" alt="$_pizza->PizzaName">
+            <img src="{$_pizza->Bilddatei}" alt="$_pizza->PizzaName" onClick="addItem($_pizza->pizzaID,  '$_pizza->PizzaName', $_pizza->Preis)" />
+            {$_pizza->pizzaID}
             {$_pizza->PizzaName}
             {$_pizza->Preis}€
           </p>
@@ -93,26 +97,19 @@ EOT;
       <form action="bestellung.php" method="post">
         <!--Dropdownmenu -->
         <select multiple name="basket[]" id="myList" size="5" tabindex="2">
-          <option value="1">Pizza Salami</option>
-          <option value="2">Pizza Margherita</option>
-          <option value="3">Pizza Hawaii</option>
-          <option value="4">Pizza Marinara</option>
-          <option value="5">Pizza Hühnchen</option>
-          <option value="6">Pizza TEst</option>
         </select>
         <!--Maximalpreis -->
-        <p>14.50€</p>			
+        <h4 id="preis">0.00€</h4>
         <p>
           <input type="text" name="adresse" size="20" value="" placeholder="Adresse Nr." tabindex="3"><br />
-          <input type="button" name="delete all" value="Alle Löschen" tabindex="4">
-          <input type="button" name="delete selected" value="Auswahl Löschen" tabindex="5">
-          <input type="submit" name="order" value="Bestellen" tabindex="6">
+          <input type="button" name="delete all" value="Alle Löschen" tabindex="4" onclick="deleteAll()">
+          <input type="button" name="delete selected" value="Auswahl Löschen" tabindex="5" onclick="deleteSelected()">
+          <input type="submit" name="order" value="Bestellen" tabindex="6" onclick="selectAll()">
         </p>
       </form>
     </section> 
 
 EOT;
-
     $this->generatePageFooter();
   }
 

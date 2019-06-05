@@ -2,6 +2,7 @@
 
 class Pizza {
   //Variables
+  var $pizzaID;
   var $PizzaName;
   var $Bilddatei;
   var $Preis;
@@ -11,6 +12,10 @@ class Pizza {
     $this->PizzaName = $PizzaName;
     $this->Bilddatei = $Bilddatei;
     $this->Preis = $Preis; 
+  }
+
+  function setPizzaID($ID) {
+    $this->pizzaID = $ID;
   }
 }
 
