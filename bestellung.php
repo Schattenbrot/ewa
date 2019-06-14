@@ -116,7 +116,9 @@ EOT;
   protected function processReceivedData()
   {
     parent::processReceivedData();
-    if(isset($_POST['adresse']) && isset($_POST['basket'])) {
+    print_r($_POST['adresse']);
+    print_r($_POST['basket']);
+    if(isset($_POST['adresse']) && isset($_POST['basket']) && !empty($_POST['adresse'])) {
       $date = new DateTime();
       $orderTime = $date->format('Y-m-d H:i:s');
 

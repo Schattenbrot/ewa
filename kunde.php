@@ -71,16 +71,6 @@ class Customer extends Page {
     <div id="div1">
     </div>
 EOT;
-    if (isset($this->pizza_list)) {
-      foreach ($this->pizza_list as $_pizza) {
-        $_pizza[0] = htmlspecialchars($_pizza[0]);
-        $_pizza[1] = htmlspecialchars($_pizza[1]);
-        echo <<<EOT
-        <p class="Pizza"><h2 id="{$_pizza[2]}1">{$_pizza[0]}</h2>: <h2 id="{$_pizza[2]}2">{$_pizza[1]}</h2></p>
-EOT;
-      }
-    }
-
     $this->generatePageFooter();
   }
 
