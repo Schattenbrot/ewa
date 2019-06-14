@@ -29,7 +29,8 @@ class Customer extends Page {
   protected function getViewData() {
     $pizza_list = array();
 
-    $sql = "SELECT angebot.PizzaName, bestelltepizza.status FROM bestelltepizza 
+    $sql = "SELECT angebot.PizzaName, bestelltepizza.status, bestelltepizza.PizzaID
+      FROM bestelltepizza 
       JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
       WHERE bestelltepizza.fBestellungID={$this->sessionId}
       ORDER BY bestelltepizza.fBestellungID ASC";
@@ -41,7 +42,7 @@ class Customer extends Page {
     }
 
     while ($record = $recordset->fetch_assoc()) {
-      $pizza = array($record['PizzaName'], $record['status']);
+      $pizza = array($record['PizzaName'], $record['status'], $record['PizzaID']);
       $this->pizza_list[] = $pizza;
     }
 
@@ -65,13 +66,17 @@ class Customer extends Page {
     </nav>
 
     <h2>Bestellung: {$this->sessionId}</h2>
+
+    <script src='javascript/StatusUpdate.js'></script>
+    <div id="div1">
+    </div>
 EOT;
     if (isset($this->pizza_list)) {
       foreach ($this->pizza_list as $_pizza) {
         $_pizza[0] = htmlspecialchars($_pizza[0]);
         $_pizza[1] = htmlspecialchars($_pizza[1]);
         echo <<<EOT
-        <p>{$_pizza[0]}: {$_pizza[1]}</p>
+        <p class="Pizza"><h2 id="{$_pizza[2]}1">{$_pizza[0]}</h2>: <h2 id="{$_pizza[2]}2">{$_pizza[1]}</h2></p>
 EOT;
       }
     }

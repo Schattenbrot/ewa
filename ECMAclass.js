@@ -38,11 +38,11 @@ function selectAll() {
 function deleteSelected() {
   "use strict";
   var sel = document.getElementById('myList');
-  for(var i = 0; i < sel.childElementCount; i++) {
-    if (sel.childNodes[i+1].selected == true) {
-      price -= items[i].Price;;
+  for(var i = sel.childElementCount - 1; i >= 0; i--) {
+    if (sel.options[i].selected) {
+      price -= items[i].Price;
       items.splice(i, 1);
-      sel.remove(i);
+      sel.options[i].remove();
     }
   }
   document.getElementById("preis").innerText = price.toFixed(2) + "€";

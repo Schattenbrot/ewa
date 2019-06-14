@@ -35,7 +35,7 @@ class KundenStatus extends Page
   protected function getViewData() {
     $pizza_list = array();
 
-    $sql = "SELECT angebot.PizzaName, bestelltepizza.status FROM bestelltepizza 
+    $sql = "SELECT bestelltepizza.PizzaID, angebot.PizzaName, bestelltepizza.Status FROM bestelltepizza 
       JOIN angebot ON bestelltepizza.fPizzaNummer=angebot.PizzaNummer
 	  WHERE bestelltepizza.fBestellungID={$this->sessionId}
 	  ORDER BY bestelltepizza.fBestellungID ASC";
