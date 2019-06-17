@@ -60,8 +60,8 @@ class Orderpage extends Page
     echo <<<EOT
     <nav>
       <ul>
-        <li><a href="bestellung.php">Bestellung</a></li>
-        <li class="current"><a href="baecker.php">Bäcker</a></li>
+        <li class="current"><a href="bestellung.php">Bestellung</a></li>
+        <li><a href="baecker.php">Bäcker</a></li>
         <li><a href="fahrer.php">Fahrer</a></li>
         <li><a href="kunde.php">Kunde</a></li>
       </ul>
@@ -116,8 +116,6 @@ EOT;
   protected function processReceivedData()
   {
     parent::processReceivedData();
-    print_r($_POST['adresse']);
-    print_r($_POST['basket']);
     if(isset($_POST['adresse']) && isset($_POST['basket']) && !empty($_POST['adresse'])) {
       $date = new DateTime();
       $orderTime = $date->format('Y-m-d H:i:s');

@@ -79,12 +79,12 @@ class Driver extends Page {
     <nav>
       <ul>
         <li><a href="bestellung.php">Bestellung</a></li>
-        <li class="current"><a href="baecker.php">Bäcker</a></li>
-        <li><a href="fahrer.php">Fahrer</a></li>
+        <li><a href="baecker.php">Bäcker</a></li>
+				<li class="current"><a href="fahrer.php">Fahrer</a></li>
         <li><a href="kunde.php">Kunde</a></li>
       </ul>
 		</nav>
-
+		<section>
 EOT;
 		if(isset($this->order_list)) {
 			$orderID = 0;
@@ -143,6 +143,7 @@ EOT;
         }
 			}
 		}
+		echo '</section>';
 		$this->generatePageFooter();
 	}
 

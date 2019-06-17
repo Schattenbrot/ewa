@@ -64,13 +64,14 @@ class Customer extends Page {
         <li class="current"><a href="kunde.php">Kunde</a></li>
       </ul>
     </nav>
-
+    <section>
     <h2>Bestellung: {$this->sessionId}</h2>
 
     <script src='javascript/StatusUpdate.js'></script>
     <div id="div1">
     </div>
 EOT;
+    echo '</section>';
     $this->generatePageFooter();
   }
 

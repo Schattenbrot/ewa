@@ -62,7 +62,8 @@ class Baker extends Page {
         <li><a href="kunde.php">Kunde</a></li>
       </ul>
     </nav>
-
+    
+    <section>
     <h3>Bestellung</h3>
     <p>Bestellt</p>
     <p>Ofen</p>
@@ -112,7 +113,7 @@ EOT;
           }
         }
       }
- 
+    echo '</section>';
     $this->generatePageFooter();
   }
 
