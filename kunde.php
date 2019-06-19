@@ -56,20 +56,23 @@ class Customer extends Page {
     $this->generatePageHeader('Kunde');
 
     echo <<<EOT
-    <nav>
-      <ul>
-        <li><a href="bestellung.php">Bestellung</a></li>
-        <li><a href="baecker.php">Bäcker</a></li>
-        <li><a href="fahrer.php">Fahrer</a></li>
-        <li class="current"><a href="kunde.php">Kunde</a></li>
-      </ul>
-    </nav>
+    <section id="menu">
+      <nav>
+        <ul>
+          <li><a href="bestellung.php">Bestellung</a></li>
+          <li><a href="baecker.php">Bäcker</a></li>
+          <li><a href="fahrer.php">Fahrer</a></li>
+          <li class="current"><a href="kunde.php">Kunde</a></li>
+        </ul>
+      </nav>
+    </section>
     <section id="sectionKunde1">
-    <h2>Bestellung: {$this->sessionId}</h2>
+    <h1>Bestellung: {$this->sessionId}</h1>
 
     <script src='javascript/StatusUpdate.js'></script>
     <div id="div1">
     </div>
+    <input type="button" name="redirect" value="Neue Bestellung" tabindex="5" onclick="location.href='bestellung.php';">
 EOT;
     echo '</section>';
     $this->generatePageFooter();

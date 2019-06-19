@@ -58,15 +58,18 @@ class Orderpage extends Page
     $this->getViewData();
     $this->generatePageHeader('Bestellung');
     echo <<<EOT
-    <nav>
-      <ul>
-        <li class="current"><a href="bestellung.php">Bestellung</a></li>
-        <li><a href="baecker.php">Bäcker</a></li>
-        <li><a href="fahrer.php">Fahrer</a></li>
-        <li><a href="kunde.php">Kunde</a></li>
-      </ul>
-		</nav>
-    <section>
+    <section id="menu">
+      <nav>
+        <ul>
+          <li class="current"><a href="bestellung.php">Bestellung</a></li>
+          <li><a href="baecker.php">Bäcker</a></li>
+          <li><a href="fahrer.php">Fahrer</a></li>
+          <li><a href="kunde.php">Kunde</a></li>
+        </ul>
+      </nav>
+    </section>
+
+    <section class="column" id="pizzaSection">
       <h1>Bestellung</h1>
       <h2>Speisekarte</h2>
 EOT;
@@ -80,8 +83,10 @@ EOT;
           $_pizza->pizzaID = htmlspecialchars($_pizza->pizzaID);
 
           echo <<<EOT
-          <p>
+          <p id="pizzaP0">
             <img src="{$_pizza->Bilddatei}" alt="$_pizza->PizzaName" onClick="addItem($_pizza->pizzaID,  '$_pizza->PizzaName', $_pizza->Preis)" />
+          </p>
+          <p id="pizzaP1">
             {$_pizza->pizzaID}
             {$_pizza->PizzaName}
             {$_pizza->Preis}€
@@ -91,7 +96,7 @@ EOT;
       }
       echo <<<EOT
     </section>
-    <section tabindex="1">
+    <section class="column" id="basketSection" tabindex="1">
       <h1>Warenkorb</h1>
       <!--Dynamischer Teil -->
       <form action="bestellung.php" method="post">

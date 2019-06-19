@@ -75,16 +75,19 @@ class Driver extends Page {
 	protected function generateView() {
 		$this->getViewData();
     $this->generatePageHeader('Fahrer');
-    echo <<<EOT
-    <nav>
-      <ul>
-        <li><a href="bestellung.php">Bestellung</a></li>
-        <li><a href="baecker.php">Bäcker</a></li>
-				<li class="current"><a href="fahrer.php">Fahrer</a></li>
-        <li><a href="kunde.php">Kunde</a></li>
-      </ul>
-		</nav>
-		<section>
+		echo <<<EOT
+		<section id="menu">
+	    <nav>
+				<ul>
+					<li><a href="bestellung.php">Bestellung</a></li>
+					<li><a href="baecker.php">Bäcker</a></li>
+					<li class="current"><a href="fahrer.php">Fahrer</a></li>
+					<li><a href="kunde.php">Kunde</a></li>
+				</ul>
+			</nav>
+		</section>
+
+		<section id="fahrerMainSection">
 EOT;
 		if(isset($this->order_list)) {
 			$orderID = 0;
@@ -113,36 +116,66 @@ EOT;
 				} else if ($currStatus >= 3 && $currStatus <= 4 && $_order->getOrderID() != $orderID) {
 					$countPrintedOrders++;
 					echo <<<EOT
+					<div id="div1">
 					<form action="fahrer.php" method="post" id="a{$formid}">
-						<p>
-							Order: {$currOrderID}
-							Preis: {$currPrice}€
+						<p id="fahrerP1">
 							Adresse: {$currAdresse}
+						</p>
+						<p id="fahrerP3">
+							Preis: {$currPrice}€
 							<input type="hidden" name="order" value="{$currOrderID}">
+						</p>
+						<p id="fahrerP2">
+							{$currPizza}
+						</p>
+						<p>
 EOT;
 							if ($currStatus == 3) {
 								echo <<<EOT
-								<input type="radio" name="status" value="fertig" checked>
-								<input type="radio" name="status" value="inZustellung" onclick="document.forms['a{$formid}'].submit();">
-								<input type="radio" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+								<ul>
+									<li>
+										<label for="radio1">Fertig</label>
+										<input type="radio" id="radio1" name="status" value="fertig" checked>
+									</li>
+									<li>
+										<label for="radio2">In Zustellung</label>
+										<input type="radio" id="radio2" name="status" value="inZustellung" onclick="document.forms['a{$formid}'].submit();">
+									</li>
+									<li>
+										<label for="radio3">Zugestellt</label>
+										<input type="radio" id="radio3" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+									</li>
+								</ul>
 EOT;
 							}
 							if ($currStatus == 4) {
 								echo <<<EOT
-								<input type="radio" name="status" value="fertig" onclick="document.forms['a{$formid}'].submit();">
-								<input type="radio" name="status" value="inZustellung" checked>
-								<input type="radio" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+								<ul>
+									<li>
+										<label for="radio1">Fertig</label>
+										<input type="radio" id="radio1" name="status" value="fertig" onclick="document.forms['a{$formid}'].submit();">
+									</li>
+									<li>
+										<label for="radio2">In Zustellung</label>
+										<input type="radio" id="radio2" name="status" value="inZustellung" checked>
+									</li>
+									<li>
+										<label for="radio3">Zugestellt</label>
+										<input type="radio" id="radio3" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+									</li>
+								</ul>
 EOT;
 							}
-							echo 'Bestellung: ' . $currPizza;
-						echo <<<EOT
+echo <<<EOT
 						</p>
 					</form>
+					</div>
 EOT;
 					$formid++;
         }
 			}
 		}
+	
 		echo '</section>';
 		$this->generatePageFooter();
 	}

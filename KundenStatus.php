@@ -65,6 +65,12 @@ class KundenStatus extends Page
 
   protected function processReceivedData()
   {
+    /*header("Cache-Control: no-store, no-cahce, must-revalidate"); // HTTP/1.1
+    header("Expires: Sat, 01 Jul 2000, 06:00:00 GMT"); // Datum in Vergangenheit
+    header("Cache-Control: post-check=0, pre-check=0", false); // fuer IE
+    header("Pragma: no-cache");
+    session_cache_limiter('nocache');
+    session_cache_expire(0);*/
     parent::processReceivedData();
     header("Content-type: application/json; charset=UTF-8");
 	}

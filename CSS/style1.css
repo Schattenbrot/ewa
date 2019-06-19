@@ -1,11 +1,12 @@
 /* CSS style test sheet */
 body {
   margin-left: 0;
-  padding-top: 40px;
+  padding-top: 5em;
   background-color: grey;
 }
-
-ul {
+/* -------------------- MENU --------------------- */
+/* ----------------------------------------------- */
+#menu ul {
   list-style-type: none;
   width: 100%;
   position: fixed;
@@ -16,12 +17,12 @@ ul {
   background-color: #333;
 }
 
-li {
+#menu li {
   float: left;
   border-right: 1px solid grey;
 }
 
-li a {
+#menu li a {
   display: block;
   color: white;
   text-align: center;
@@ -29,7 +30,7 @@ li a {
   text-decoration: none;
 }
 
-li a:hover {
+#menu li a:hover {
   background-color: green;
 }
 
@@ -37,12 +38,118 @@ li a:hover {
   background-color: purple;
 }
 
-section {
-  margin-left: 20px;
+/* ------------------------------------------------ */
+/* ---------------- BESTELLUNG -------------------- */
+/* ------------------------------------------------ */
+#pizzaSection, #basketSection {
+  margin-left: 2em;
+}
+#pizzaP0 {
+  margin: 1em 0em 0em 0em;
+}
+#pizzaP1 {
+  margin: 0em;
+}
+.column {
+  float: left;
+  width: 50%;
 }
 
+@media screen and (min-width: 700px) {
+  #basketSection {
+    position: fixed;
+    margin-left: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+
+/* ------------------------------------------------ */
+/* ---------------- KUNDE ------------------------- */
+/* ------------------------------------------------ */
 #sectionKunde1 {
   margin: auto;
   width: 50%;
   border: 3px solid white;
+  text-align: center;
+}
+
+input [type="radio"], label{
+  display: block;
+}
+
+#fahrerMainSection {
+  margin-left: 2em;
+}
+
+#fahrerMainSection ul {
+  list-style: none;
+  display: inline-block;
+  margin: 0;
+  padding-left: 0;
+}
+
+#fahrerMainSection ul li {
+  float: left;
+  display: block;
+  width: 7em;
+}
+
+#fahrerMainSection #div1 {
+  background-color: #6A6C6E;
+}
+
+#fahrerMainSection #fahrerP1 {
+  font-weight: bold;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin-bottom: 0.2em;
+}
+
+#fahrerMainSection #fahrerP3 {
+  font-weight: bold;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin-top: 0em;
+  margin-bottom: 0.2em;
+  color: #800000;
+}
+
+#fahrerMainSection #fahrerP2 {
+  font-weight: bold;
+  font-size: 1.2em;
+  line-height: 1em;
+  margin-top: 0em;
+}
+
+#bakerMainSection {
+  font-size: 1.2em;
+  margin-left: 2em;
+}
+
+#bakerMainSection tr:nth-child(even) {
+  background-color: #6A6C6E;
+}
+
+#bakerMainSection #tr1 td {
+  font-weight: bold;
+}
+
+#bakerMainSection tr, td {
+  width: 5em;
+}
+
+#bakerMainSection #td1, #td2 {
+  width: 15em;
+}
+
+#bakerMainSection em {
+  font-style: normal;
+  border: 1px solid white;
+  width: 50%;
 }
