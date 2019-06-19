@@ -1,0 +1,48 @@
+/* CSS style test sheet */
+body {
+  margin-left: 0;
+  padding-top: 40px;
+  background-color: grey;
+}
+
+ul {
+  list-style-type: none;
+  width: 100%;
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  border-right: 1px solid grey;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 40px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: green;
+}
+
+.current {
+  background-color: purple;
+}
+
+section {
+  margin-left: 20px;
+}
+
+#sectionKunde1 {
+  margin: auto;
+  width: 50%;
+  border: 3px solid white;
+}
