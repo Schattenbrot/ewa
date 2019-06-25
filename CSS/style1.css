@@ -44,15 +44,19 @@ body {
 #pizzaSection, #basketSection {
   margin-left: 2em;
 }
-#pizzaP0 {
+.pizzaP0 {
   margin: 1em 0em 0em 0em;
 }
-#pizzaP1 {
+.pizzaP1 {
   margin: 0em;
 }
 .column {
   float: left;
   width: 50%;
+}
+
+#basketSection h2 {
+  font-size: 1.2em;
 }
 
 @media screen and (min-width: 700px) {
@@ -117,18 +121,18 @@ input [type="radio"], label{
   width: 7em;
 }
 
-#fahrerMainSection #div1 {
+#fahrerMainSection .div1 {
   background-color: #6A6C6E;
 }
 
-#fahrerMainSection #fahrerP1 {
+#fahrerMainSection .fahrerP1 {
   font-weight: bold;
   font-size: 1.2em;
   line-height: 1em;
   margin-bottom: 0.2em;
 }
 
-#fahrerMainSection #fahrerP3 {
+#fahrerMainSection .fahrerP3 {
   font-weight: bold;
   font-size: 1.2em;
   line-height: 1em;
@@ -137,7 +141,7 @@ input [type="radio"], label{
   color: #800000;
 }
 
-#fahrerMainSection #fahrerP2 {
+#fahrerMainSection .fahrerP2 {
   font-weight: bold;
   font-size: 1.2em;
   line-height: 1em;

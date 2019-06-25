@@ -78,6 +78,8 @@ EOT;
           <td>Ofen</td>
           <td>Fertig</td>
         </tr>
+      </table>
+
 EOT;
       foreach($this->order_list as $value) {
         $_pizza = $value;
@@ -87,16 +89,19 @@ EOT;
         $Status = htmlspecialchars($_pizza->getStatus());
         if ($Status < 4){
             echo <<<EOT
+              <form action="baecker.php" method="post" id="a{$formid}">
+              <table>
             <tr>            
-            <form action="baecker.php" method="post" id="a{$formid}">
               <td id="td2">{$OrderID}: {$PizzaName}</td>
               <input type="hidden" name="changedPizza" value="{$PizzaID}">
+
 EOT;
               if ($Status == 1) {
                 echo <<<EOT
                 <td><input type="radio" name="radio" value="bestellt" checked></td>
                 <td><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></td>
                 <td><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></td>
+
 EOT;
               }
               if ($Status == 2) {
@@ -104,6 +109,7 @@ EOT;
                 <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
                 <td><input type="radio" name="radio" value="inZubereitung" checked></td>
                 <td><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></td>
+
 EOT;
               }
               if ($Status == 3) {
@@ -111,11 +117,14 @@ EOT;
                 <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
                 <td><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></td>
                 <td><input type="radio" name="radio" value="fertig" checked></td>
+
 EOT;
               }
               echo <<<EOT
-              </tr>
-            </form>
+            </tr>
+            </table>
+             </form>
+
 EOT;
             $formid++;
           }

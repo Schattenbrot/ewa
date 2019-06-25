@@ -85,14 +85,15 @@ EOT;
           $_pizza->pizzaID = htmlspecialchars($_pizza->pizzaID);
 
           echo <<<EOT
-          <p id="pizzaP0">
+          <p class="pizzaP0">
             <img src="{$_pizza->Bilddatei}" alt="$_pizza->PizzaName" onClick="addItem($_pizza->pizzaID,  '$_pizza->PizzaName', $_pizza->Preis)" />
           </p>
-          <p id="pizzaP1">
+          <p class="pizzaP1">
             {$_pizza->pizzaID}
             {$_pizza->PizzaName}
             {$_pizza->Preis}€
           </p>
+
 EOT;
         }
       }
@@ -103,15 +104,14 @@ EOT;
       <!--Dynamischer Teil -->
       <form action="bestellung.php" method="post">
         <!--Dropdownmenu -->
-        <select multiple name="basket[]" id="myList" size="5" tabindex="2">
-        </select>
+        <select multiple name="basket[]" id="myList" size="5" tabindex="2"></select>
         <!--Maximalpreis -->
-        <h4 id="preis">0.00€</h4>
+        <h2 id="preis">0.00€</h2>
         <p>
           <input type="text" id="adressText" name="adresse" size="20" value="" placeholder="Adresse Nr." tabindex="3"><br />
           <input type="button" name="delete all" value="Alle Löschen" tabindex="4" onclick="deleteAll()">
           <input type="button" name="delete selected" value="Auswahl Löschen" tabindex="5" onclick="deleteSelected()">
-          <input type="submit" id="submit" name="order" value="Bestellen" tabindex="6" onclick="selectAll()" disabled="true">
+          <input type="submit" id="submit" name="order" value="Bestellen" tabindex="6" onclick="selectAll()" disabled="disabled">
         </p>
       </form>
     </section> 

@@ -93,7 +93,6 @@ class Driver extends Page {
 EOT;
 		if(isset($this->order_list)) {
 			$orderID = 0;
-			$countPrintedOrders = 0;
 			$formid = 0;
 			foreach($this->order_list as $value) {
         $_order = $value;
@@ -116,18 +115,17 @@ EOT;
 					$orderID = $_order->getOrderID();
 					continue;
 				} else if ($currStatus >= 3 && $currStatus <= 4 && $_order->getOrderID() != $orderID) {
-					$countPrintedOrders++;
 					echo <<<EOT
-					<div id="div1">
+          <div class="div1">
 					<form action="fahrer.php" method="post" id="a{$formid}">
-						<p id="fahrerP1">
+						<p class="fahrerP1">
 							Adresse: {$currAdresse}
 						</p>
-						<p id="fahrerP3">
+						<p class="fahrerP3">
 							Preis: {$currPrice}€
 							<input type="hidden" name="order" value="{$currOrderID}">
 						</p>
-						<p id="fahrerP2">
+						<p class="fahrerP2">
 							{$currPizza}
 						</p>
 EOT;
@@ -135,16 +133,16 @@ EOT;
 								echo <<<EOT
 								<ul>
 									<li>
-										<label for="radio1">Fertig</label>
-										<input type="radio" id="radio1" name="status" value="fertig" checked>
+										<label for="radio1{$formid}">Fertig</label>
+										<input type="radio" id="radio1{$formid}" name="status" value="fertig" checked>
 									</li>
 									<li>
-										<label for="radio2">In Zustellung</label>
-										<input type="radio" id="radio2" name="status" value="inZustellung" onclick="document.forms['a{$formid}'].submit();">
+										<label for="radio2{$formid}">In Zustellung</label>
+										<input type="radio" id="radio2{$formid}" name="status" value="inZustellung" onclick="document.forms['a{$formid}'].submit();">
 									</li>
 									<li>
-										<label for="radio3">Zugestellt</label>
-										<input type="radio" id="radio3" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+										<label for="radio3{$formid}">Zugestellt</label>
+										<input type="radio" id="radio3{$formid}" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
 									</li>
 								</ul>
 EOT;
@@ -153,16 +151,16 @@ EOT;
 								echo <<<EOT
 								<ul>
 									<li>
-										<label for="radio1">Fertig</label>
-										<input type="radio" id="radio1" name="status" value="fertig" onclick="document.forms['a{$formid}'].submit();">
+										<label for="radio1{$formid}">Fertig</label>
+										<input type="radio" id="radio1{$formid}" name="status" value="fertig" onclick="document.forms['a{$formid}'].submit();">
 									</li>
 									<li>
-										<label for="radio2">In Zustellung</label>
-										<input type="radio" id="radio2" name="status" value="inZustellung" checked>
+										<label for="radio2{$formid}">In Zustellung</label>
+										<input type="radio" id="radio2{$formid}" name="status" value="inZustellung" checked>
 									</li>
 									<li>
-										<label for="radio3">Zugestellt</label>
-										<input type="radio" id="radio3" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
+										<label for="radio3{$formid}">Zugestellt</label>
+										<input type="radio" id="radio3{$formid}" name="status" value="zugestellt" onclick="document.forms['a{$formid}'].submit();">
 									</li>
 								</ul>
 EOT;
