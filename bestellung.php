@@ -57,6 +57,7 @@ class Orderpage extends Page
   {
     $this->getViewData();
     $this->generatePageHeader('Bestellung');
+    /*
     echo <<<EOT
     <section id="menu">
       <nav>
@@ -68,7 +69,8 @@ class Orderpage extends Page
         </ul>
       </nav>
     </section>
-
+*/
+    echo <<<EOT
     <section class="column" id="pizzaSection">
       <h1>Bestellung</h1>
       <h2>Speisekarte</h2>
@@ -106,10 +108,10 @@ EOT;
         <!--Maximalpreis -->
         <h4 id="preis">0.00€</h4>
         <p>
-          <input type="text" name="adresse" size="20" value="" placeholder="Adresse Nr." tabindex="3"><br />
+          <input type="text" id="adressText" name="adresse" size="20" value="" placeholder="Adresse Nr." tabindex="3"><br />
           <input type="button" name="delete all" value="Alle Löschen" tabindex="4" onclick="deleteAll()">
           <input type="button" name="delete selected" value="Auswahl Löschen" tabindex="5" onclick="deleteSelected()">
-          <input type="submit" name="order" value="Bestellen" tabindex="6" onclick="selectAll()">
+          <input type="submit" id="submit" name="order" value="Bestellen" tabindex="6" onclick="selectAll()" disabled="true">
         </p>
       </form>
     </section> 

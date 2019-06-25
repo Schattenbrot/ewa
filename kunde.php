@@ -54,7 +54,7 @@ class Customer extends Page {
   protected function generateView() {
     $this->getViewData();
     $this->generatePageHeader('Kunde');
-
+/*
     echo <<<EOT
     <section id="menu">
       <nav>
@@ -66,6 +66,8 @@ class Customer extends Page {
         </ul>
       </nav>
     </section>
+    */
+    echo <<<EOT
     <section id="sectionKunde1">
     <h1>Bestellung: {$this->sessionId}</h1>
 

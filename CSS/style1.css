@@ -1,7 +1,7 @@
 /* CSS style test sheet */
 body {
   margin-left: 0;
-  padding-top: 5em;
+  margin-right: 0;
   background-color: grey;
 }
 /* -------------------- MENU --------------------- */
@@ -19,14 +19,14 @@ body {
 
 #menu li {
   float: left;
-  border-right: 1px solid grey;
+  border-right: 0.1em solid grey;
 }
 
 #menu li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 40px;
+  padding: 1em 1.2em;
   text-decoration: none;
 }
 
@@ -60,12 +60,26 @@ body {
     position: fixed;
     margin-left: 50%;
   }
+
+  img {
+    width: 12.5em;
+    height: 7.5em;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .column {
     width: 100%;
   }
+
+  img {
+    width: 90%;
+    height: 90%;
+  }
+}
+
+select {
+  width: 15em;
 }
 
 
@@ -75,10 +89,13 @@ body {
 #sectionKunde1 {
   margin: auto;
   width: 50%;
-  border: 3px solid white;
+  border: 0.5em solid white;
   text-align: center;
 }
 
+/* ------------------------------------------------ */
+/* ---------------- FAHRER ------------------------ */
+/* ------------------------------------------------ */
 input [type="radio"], label{
   display: block;
 }
@@ -127,6 +144,9 @@ input [type="radio"], label{
   margin-top: 0em;
 }
 
+/* ------------------------------------------------ */
+/* ----------------- BAKER ------------------------ */
+/* ------------------------------------------------ */
 #bakerMainSection {
   font-size: 1.2em;
   margin-left: 2em;
@@ -150,6 +170,6 @@ input [type="radio"], label{
 
 #bakerMainSection em {
   font-style: normal;
-  border: 1px solid white;
+  border: 0.2em solid white;
   width: 50%;
 }

@@ -47,3 +47,27 @@ function deleteSelected() {
   }
   document.getElementById("preis").innerText = price.toFixed(2) + "€";
 }
+
+function validate() {
+  var filled = true;
+
+  if (document.getElementById("adressText").value == "" ||
+      items.length == 0) {
+    filled = false;
+  }
+
+  if (filled) {
+    document.getElementById("submit").disabled = false;
+  } else {
+    document.getElementById("submit").disabled = true;
+  }
+}
+
+function check() {
+  document.getElementById("adressText").onkeyup = validate();
+  document.getElementById("adressText").onkeydown = validate();
+}
+
+onload = function() {
+  window.setInterval (check, 200);
+}

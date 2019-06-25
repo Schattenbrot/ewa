@@ -74,7 +74,8 @@ class Driver extends Page {
 
 	protected function generateView() {
 		$this->getViewData();
-    $this->generatePageHeader('Fahrer');
+		$this->generatePageHeader('Fahrer');
+		/*
 		echo <<<EOT
 		<section id="menu">
 	    <nav>
@@ -86,7 +87,8 @@ class Driver extends Page {
 				</ul>
 			</nav>
 		</section>
-
+*/
+		echo <<<EOT
 		<section id="fahrerMainSection">
 EOT;
 		if(isset($this->order_list)) {
@@ -128,7 +130,6 @@ EOT;
 						<p id="fahrerP2">
 							{$currPizza}
 						</p>
-						<p>
 EOT;
 							if ($currStatus == 3) {
 								echo <<<EOT
@@ -167,7 +168,6 @@ EOT;
 EOT;
 							}
 echo <<<EOT
-						</p>
 					</form>
 					</div>
 EOT;

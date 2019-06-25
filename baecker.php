@@ -52,7 +52,7 @@ class Baker extends Page {
   protected function generateView() {
     $this->getViewData();
     $this->generatePageHeader('Bäcker');
-
+/*
     echo <<<EOT
 		<section id="menu">
       <nav>
@@ -64,7 +64,8 @@ class Baker extends Page {
         </ul>
       </nav>
     </section>
-    
+EOT;*/
+    echo <<<EOT
     <section id="bakerMainSection">
 EOT;
     if(isset($this->order_list)) {
@@ -84,7 +85,7 @@ EOT;
         $PizzaName = htmlspecialchars($_pizza->getPizzaName()[0]);
         $PizzaID = htmlspecialchars($_pizza->getPizzaID());
         $Status = htmlspecialchars($_pizza->getStatus());
-        if ($Status < 3){
+        if ($Status < 4){
             echo <<<EOT
             <tr>            
             <form action="baecker.php" method="post" id="a{$formid}">
@@ -103,6 +104,13 @@ EOT;
                 <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
                 <td><input type="radio" name="radio" value="inZubereitung" checked></td>
                 <td><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></td>
+EOT;
+              }
+              if ($Status == 3) {
+                echo <<<EOT
+                <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
+                <td><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></td>
+                <td><input type="radio" name="radio" value="fertig" checked></td>
 EOT;
               }
               echo <<<EOT
