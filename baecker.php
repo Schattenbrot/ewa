@@ -71,14 +71,10 @@ EOT;
     if(isset($this->order_list)) {
       $formid = 0;
       echo <<<EOT
-      <table>
-        <tr id="tr1">
-          <td id="td1">Id und Pizza</td>
-          <td>Bestellt</td>
-          <td>Ofen</td>
-          <td>Fertig</td>
-        </tr>
-      </table>
+      <p class="p2">ID und Pizzaname</p>
+      <p class="p1">Bestellt</p>
+      <p class="p1">Ofen</p>
+      <p class="p1">Fertig</p>
 
 EOT;
       foreach($this->order_list as $value) {
@@ -90,46 +86,41 @@ EOT;
         if ($Status < 4){
             echo <<<EOT
               <form action="baecker.php" method="post" id="a{$formid}">
-              <table>
-            <tr>            
-              <td id="td2">{$OrderID}: {$PizzaName}</td>
+              <p class="p2">{$OrderID}: {$PizzaName}</p>
               <input type="hidden" name="changedPizza" value="{$PizzaID}">
 
 EOT;
               if ($Status == 1) {
                 echo <<<EOT
-                <td><input type="radio" name="radio" value="bestellt" checked></td>
-                <td><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></td>
-                <td><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></td>
+                <p class="p1"><input type="radio" name="radio" value="bestellt" checked></p>
+                <p class="p1"><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></p>
+                <p class="p1"><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></p>
 
 EOT;
               }
               if ($Status == 2) {
                 echo <<<EOT
-                <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
-                <td><input type="radio" name="radio" value="inZubereitung" checked></td>
-                <td><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></td>
+                <p class="p1"><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></p>
+                <p class="p1"><input type="radio" name="radio" value="inZubereitung" checked></p>
+                <p class="p1"><input type="radio" name="radio" value="fertig" onclick="document.forms['a{$formid}'].submit();"></p>
 
 EOT;
               }
               if ($Status == 3) {
                 echo <<<EOT
-                <td><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></td>
-                <td><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></td>
-                <td><input type="radio" name="radio" value="fertig" checked></td>
+                <p class="p1"><input type="radio" name="radio" value="bestellt" onclick="document.forms['a{$formid}'].submit();"></p>
+                <p class="p1"><input type="radio" name="radio" value="inZubereitung" onclick="document.forms['a{$formid}'].submit();"></p>
+                <p class="p1"><input type="radio" name="radio" value="fertig" checked></p>
 
 EOT;
               }
               echo <<<EOT
-            </tr>
-            </table>
-             </form>
+            </form>
 
 EOT;
             $formid++;
           }
         }
-      echo '</table>';
       }
     echo '</section>';
     $this->generatePageFooter();
@@ -150,7 +141,7 @@ EOT;
 
   public static function main() {
 		try {
-			$page = new Baker();
+      $page = new Baker();
 			$page->processReceivedData();
 			$page->generateView();
 		}
