@@ -100,7 +100,7 @@ abstract class Page
                 <link rel="stylesheet" type="text/css" href="CSS/style1.css" />
             <?php
             echo ( $headline == 'Bäcker' || $headline == 'Fahrer') ?
-                '<meta http-equiv="refresh" content="10">' : ''
+                '<meta http-equiv="refresh" content="5">' : ''
                 ?>
         </head>
         <body>
